@@ -19,9 +19,9 @@ This project aims to automate the process of saving an image of each screen for 
 2. You will need to dump your own copy of the game into this project folder and rename it to `Pokemon Trading Card Game Completed Save 228 In Album.gbc`. I used the American copy of the game. I cannot confirm if the save file works for other regions of this game.
 3. Configure `screenshotDirectory=""` in `Pokemon-TCG-Completed-Save-And-Card-Printouts.lua`. This folder needs to be created if it doesn't already exist
 3. Open the game in mGBA. It should load the completed save file automatically
-4. Next, load the script into mGBA by going to `Tools > Scripting... > File > Load Script... > Select Pokemon-TCG-Completed-Save-And-Card-Printouts.lua`
+4. Next, load the script into mGBA by going to `Tools > Scripting... > File > Load Script... > Select Pokemon-TCG-Completed-Save-And-Card-Printouts.lua`. You may wish to fast-forward the game before running the script.
 
-    For me the game crashes when loading the script via the filename, though this could be a Linux-only issue. To fix this, edit `~/.config/mgba/qt.ini` and add
+    For me the game crashes when loading the script via the filename, though this could be a Linux-only issue. To fix this, edit `~/.config/mgba/qt.ini` and add:
     ```
     [recentScripts]
     0=/path/to/Pokemon-TCG-Completed-Save-And-Card-Printouts/Pokemon-TCG-Completed-Save-And-Card-Printouts.lua
