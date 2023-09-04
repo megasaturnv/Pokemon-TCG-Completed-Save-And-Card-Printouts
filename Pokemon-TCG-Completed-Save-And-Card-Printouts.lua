@@ -61,29 +61,23 @@ sleepFrames(20)
 
 
 
-for i=1,10 do --50 Axx cards in the colosseum pack
-	screenshotSelectedCardInList("A" .. zeroPadTwoDigits(i), 4)
+-- Colosseum Pack
+for i=1,38 do --38 Pokemon Cards in the Colosseum pack. There are 50 Axx cards in total
+	screenshotSelectedCardInList("A" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
 	pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 	sleepFrames(20)
 end
 
+for i=39,50 do --12 Trainer Cards in the Colosseum pack. There are 50 Axx cards in total
+	screenshotSelectedCardInList("A" .. zeroPadTwoDigits(i), 1) --Trainer cards have 1 face
+	pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+	sleepFrames(20)
+end
 
---[[
-for i=1,38 do --50 Axx cards in the colosseum pack
-	screenshotSelectedPokemonInList("A" .. zeroPadTwoDigits(i))
+for i=1,6 do --6 Energy Cards in the Colosseum pack. There are 6 Exx cards in total (in the Colosseum pack)
+	screenshotSelectedCardInList("E" .. zeroPadTwoDigits(i), 1) --Energy cards have 1 face
 	pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 	sleepFrames(20)
 end
-for i=39,50 do --50 Axx cards in the colosseum pack
-	screenshotSelectedCardInList("A" .. zeroPadTwoDigits(i))
-	pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
-	sleepFrames(20)
-end
-for i=1,6 do --6 Exx cards in the colosseum pack
-	screenshotSelectedCardInList("E" .. zeroPadTwoDigits(i))
-	pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
-	sleepFrames(20)
-end
---]]
 
 console:log("Finished Pokemon-TCG-Completed-Save-And-Printouts.lua")
