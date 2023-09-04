@@ -5,14 +5,14 @@ This project is work in progress. Currently, it can screenshot every page for ev
 
 ## Background
 I thought it would be nice to printout some cards on the Gameboy Printer from the Pokemon Trading Card Game for use in real life, only to find the printouts lacked detail:
-![Trading Card Example Printout](images/Trading Card Example Printout.png)
+![Trading Card Example Printout](images/Trading_Card_Example_Printout.png)
 
 However, you can view the cards on the Gameboy screen which includes details about each move, just like the cards in real life. The artwork is repeated across each screen though which wastes space.
 
 I was also unable to find any completed save files online making it difficult to print all 228 cards.
 
 This project aims to automate the process of saving an image of each screen for each card in the game by using the completed save file which is downloadable in this project. Then, the screenshots are cropped and stitched together to create a single image for each pokemon. An example is shown below:
-![Trading Card Example Process](images/Trading Card Example Process.png)
+![Trading Card Example Process](images/Trading_Card_Example_Process.png)
 
 ## Instructions
 1. `git clone` this project
