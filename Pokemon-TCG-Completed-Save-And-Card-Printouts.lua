@@ -1,19 +1,19 @@
 local screenshotDirectory = "/home/megasaturnv/Pictures/Pokemon-TCG-Completed-Save-And-Card-Printouts_Screenshots/" --Todo: Move to separate config file. Create folder if it doesn't exist. ~ and $HOME do not work here. Need to be an absolute path
 
-function sleepFrames(frames)
+function sleepFrames(frames) --Sleep for this number of frames
 	for i=1,frames do
 		emu:runFrame()
 	end
 end
 
-function pressAndRelease(key)
+function pressAndRelease(key) --Press a key for 1 frame, then release for 1 frame
 	emu:addKey(key)
 	sleepFrames(1)
 	emu:clearKey(key)
 	sleepFrames(1)
 end
 
-function zeroPadTwoDigits(number)
+function zeroPadTwoDigits(number) --Return a number as a zero-padded 2-digit string
 	return string.format("%02d", number)
 end
 
@@ -31,6 +31,122 @@ function screenshotSelectedCardInList(cardReference, pages)
 	end
 
 	pressAndRelease(C.GB_KEY.B) --Finally, press B to return to the list
+	sleepFrames(20)
+end
+
+function screenshotColosseumPack()
+	pressAndRelease(C.GB_KEY.A) --Enter Colosseum
+	sleepFrames(20)
+
+	for i=1,38 do --38 Pokemon Cards in the Colosseum pack. There are 50 Axx cards in total
+		screenshotSelectedCardInList("A" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
+		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+		sleepFrames(20)
+	end
+
+	for i=39,50 do --12 Trainer Cards in the Colosseum pack. There are 50 Axx cards in total
+		screenshotSelectedCardInList("A" .. zeroPadTwoDigits(i), 1) --Trainer cards have 1 face
+		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+		sleepFrames(20)
+	end
+
+	for i=1,6 do --6 Energy Cards in the Colosseum pack. There are 7 Exx cards in total (6 in the Colosseum pack)
+		screenshotSelectedCardInList("E" .. zeroPadTwoDigits(i), 1) --Energy cards have 1 face
+		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+		sleepFrames(20)
+	end
+
+	pressAndRelease(C.GB_KEY.B) --Return to Booster Pack list
+	sleepFrames(20)
+end
+
+function screenshotEvolutionPack()
+	pressAndRelease(C.GB_KEY.A) --Enter Evolution
+	sleepFrames(20)
+
+	for i=1,42 do --42 Pokemon Cards in the Evolution pack. There are 50 Bxx cards in total
+		screenshotSelectedCardInList("B" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
+		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+		sleepFrames(20)
+	end
+
+	for i=43,50 do --8 Trainer Cards in the Evolution pack. There are 50 Bxx cards in total
+		screenshotSelectedCardInList("B" .. zeroPadTwoDigits(i), 1) --Trainer cards have 1 face
+		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+		sleepFrames(20)
+	end
+
+	pressAndRelease(C.GB_KEY.B) --Return to Booster Pack list
+	sleepFrames(20)
+end
+
+function screenshotMysteryPack()
+	pressAndRelease(C.GB_KEY.A) --Enter Mystery
+	sleepFrames(20)
+
+	for i=1,46 do --46 Pokemon Cards in the Mystery pack. There are 50 Cxx cards in total
+		screenshotSelectedCardInList("C" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
+		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+		sleepFrames(20)
+	end
+
+	for i=47,50 do --4 Trainer Cards in the Mystery pack. There are 50 Cxx cards in total
+		screenshotSelectedCardInList("C" .. zeroPadTwoDigits(i), 1) --Trainer cards have 1 face
+		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+		sleepFrames(20)
+	end
+
+	screenshotSelectedCardInList("E" .. zeroPadTwoDigits(7), 1) --1 Energy Card in the Mystery pack. There are 7 Exx cards in total (1 in the Mystery pack). Energy cards have 1 face
+	pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+	sleepFrames(20)
+
+	pressAndRelease(C.GB_KEY.B) --Return to Booster Pack list
+	sleepFrames(20)
+end
+
+function screenshotLaboratoryPack()
+	pressAndRelease(C.GB_KEY.A) --Enter Laboratory
+	sleepFrames(20)
+
+	for i=1,43 do --43 Pokemon Cards in the Laboratory pack. There are 51 Dxx cards in total
+		screenshotSelectedCardInList("D" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
+		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+		sleepFrames(20)
+	end
+
+	for i=44,51 do --8 Trainer Cards in the Laboratory pack. There are 51 Dxx cards in total
+		screenshotSelectedCardInList("D" .. zeroPadTwoDigits(i), 1) --Trainer cards have 1 face
+		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+		sleepFrames(20)
+	end
+
+	pressAndRelease(C.GB_KEY.B) --Return to Booster Pack list
+	sleepFrames(20)
+end
+
+function screenshotPromotionalCardPack()
+	pressAndRelease(C.GB_KEY.A) --Enter Promotional Card
+	sleepFrames(20)
+
+	for i=1,16 do --16 Pokemon Cards in the Promotional Card pack. There are 20 Pxx cards in total
+		screenshotSelectedCardInList("P" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
+		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+		sleepFrames(20)
+	end
+
+	for i=17,18 do --2 Trainer Cards in the Promotional Card pack. There are 20 Pxx cards in total
+		screenshotSelectedCardInList("P" .. zeroPadTwoDigits(i), 1) --Trainer cards have 1 face
+		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+		sleepFrames(20)
+	end
+
+	for i=19,20 do --2 Extra Pokemon Cards in the Promotional Card pack. There are 20 Pxx cards in total
+		screenshotSelectedCardInList("P" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
+		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
+		sleepFrames(20)
+	end
+
+	pressAndRelease(C.GB_KEY.B) --Return to Booster Pack list
 	sleepFrames(20)
 end
 
@@ -56,28 +172,26 @@ pressAndRelease(C.GB_KEY.A) --Acknowledge message
 sleepFrames(20)
 pressAndRelease(C.GB_KEY.A) --Enter "Card Album"
 sleepFrames(20)
-pressAndRelease(C.GB_KEY.A) --Enter "Colosseum"
-sleepFrames(20)
-
-
 
 -- Colosseum Pack
-for i=1,38 do --38 Pokemon Cards in the Colosseum pack. There are 50 Axx cards in total
-	screenshotSelectedCardInList("A" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
-	pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
-	sleepFrames(20)
-end
+screenshotColosseumPack()
 
-for i=39,50 do --12 Trainer Cards in the Colosseum pack. There are 50 Axx cards in total
-	screenshotSelectedCardInList("A" .. zeroPadTwoDigits(i), 1) --Trainer cards have 1 face
-	pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
-	sleepFrames(20)
-end
+-- Evolution Pack
+pressAndRelease(C.GB_KEY.DOWN) --Go down to the next pack
+screenshotEvolutionPack()
 
-for i=1,6 do --6 Energy Cards in the Colosseum pack. There are 6 Exx cards in total (in the Colosseum pack)
-	screenshotSelectedCardInList("E" .. zeroPadTwoDigits(i), 1) --Energy cards have 1 face
-	pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
-	sleepFrames(20)
-end
+-- Mystery Pack
+pressAndRelease(C.GB_KEY.DOWN) --Go down to the next pack
+screenshotMysteryPack()
+
+-- Laboratory Pack
+pressAndRelease(C.GB_KEY.DOWN) --Go down to the next pack
+screenshotLaboratoryPack()
+
+-- Promotional Card Pack
+pressAndRelease(C.GB_KEY.DOWN) --Go down to the next pack
+screenshotPromotionalCardPack()
+
+
 
 console:log("Finished Pokemon-TCG-Completed-Save-And-Printouts.lua")

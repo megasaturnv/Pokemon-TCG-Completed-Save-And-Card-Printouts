@@ -1,7 +1,7 @@
 # Pokemon-TCG-Completed-Save-And-Card-Printouts
 A completed Pokemon Trading Card Game save file with Lua scripts to screenshot each card and assemble them into nice printouts.
 
-This project is **work in progress**. Currently, it can screenshot every page for every card in the Colosseum pack. It has only been tested with mGBA, though it may work with Bizhawk too.
+This project is **work in progress**. Currently, it can screenshot every page for every card in every pack (All 228 cards). There will be duplicate screenshots for Pokemon cards that only have 1 move and the screenshots are not combined yet. It has only been tested with mGBA, though it may work with Bizhawk too.
 
 ## Background
 I thought it would be nice to printout some cards on the Gameboy Printer from the Pokemon Trading Card Game for use in real life, only to find the printouts lacked detail:
