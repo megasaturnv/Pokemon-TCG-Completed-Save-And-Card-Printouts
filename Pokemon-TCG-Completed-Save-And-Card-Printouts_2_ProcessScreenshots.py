@@ -20,23 +20,13 @@ def createDirIfNotFound(filePath):
 	if not os.path.exists(dirPath):
 		os.makedirs(dirPath)
 
-def calculateMd5(filename):
-	hasher = hashlib.md5()
-	with open(filename, 'rb') as f:
-		while True:
-			data = f.read(4096)
-			if not data:
-				break
-			hasher.update(data)
-	return hasher.hexdigest()
-
 def deleteDuplicateFilesInDir(directory):
 	filenames = sorted([filename for filename in os.listdir(directory) if os.path.isfile(os.path.join(directory, filename))]) # Get a list of filenames to process, sorted alphabetically
 
 	fileHashes = {} # Dictionary to store file hashes
 
 	for filename in filenames:
-		# Calculate the MD5 hash of the file's content
+		# Calculate the MD5 hash of the file's content. Exported pngs have minimal metadata so we can compare their hashes to look for duplicates
 		with open(os.path.join(directory, filename), 'rb') as file:
 			fileHash = hashlib.md5(file.read()).hexdigest()
 
