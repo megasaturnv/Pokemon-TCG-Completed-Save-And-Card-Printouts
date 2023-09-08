@@ -1,12 +1,12 @@
 # Pokemon-TCG-Completed-Save-And-Card-Printouts
-A completed Pokemon Trading Card Game save file with Lua scripts to screenshot each card and assemble them into nice printouts. First, the Lua script screenshots every page of every card in every pack (All 228 cards). Next, the python script crops and combines the screenshots from each page of a card into a single file for that card. It will do this for all 228 cards in the game. It has only been tested with mGBA, though it may work with Bizhawk too.
+A  Pokemon Trading Card Game save file that has all 228 cards with Lua scripts to screenshot each card and assemble them into nice printouts. First, the Lua script screenshots every page of every card in every pack (All 228 cards). Next, the python script crops and combines the screenshots from each page of a card into a single file for that card. It will do this for all 228 cards in the game. It has only been tested with mGBA, though it may work with Bizhawk too.
 
 ## Background
-I thought it would be nice to printout some cards on the Gameboy Printer from the Pokemon Trading Card Game for use in real life, only to find the printouts lacked detail:
+I thought it would be nice to printout some cards on the Game Boy Printer from the Pokemon Trading Card Game for use in real life, only to find the printouts lacked detail:
 
 ![Trading Card Example Printout](images/Trading_Card_Example_Printout.png)
 
-However, you can view the cards on the Gameboy screen which includes details about each move, just like the cards in real life. The artwork is repeated across each screen though which wastes space.
+However, you can view the cards on the Game Boy screen which includes details about each move, just like the cards in real life. The artwork is repeated across each screen though which wastes space.
 
 I was also unable to find any completed save files online making it difficult to print all 228 cards.
 
@@ -33,8 +33,16 @@ PIL for the python3 script
 7. Run the python3 script with `python3 Pokemon-TCG-Completed-Save-And-Card-Printouts_2_ProcessScreenshots.py`
 8. The processed cards should now be in the location of `outputDirectory`
 
+## Todo
+* Complete more of the save file
+* Change the Lua script to use up + down keys to select the next card instead of going back to the menu
+* Optimise the delays in the Lua script
+* Recreate the Auto Deck Machine's decks in code to produce these decks from the output images
+* Automate the process of printing all cards on the Game Boy Printer (black and white images, first page)
+
 ## Useful links
 * Bulbapedia article: https://bulbapedia.bulbagarden.net/wiki/Pokémon_Trading_Card_Game_(game)
 * Cheat codes: https://gamefaqs.gamespot.com/gbc/250612-pokemon-trading-card-game/faqs/7539
 * Cheat codes: https://www.pojo.com/videogames/TCGGameboy/gameshark.html
 * mgba scripting documentation: https://mgba.io/docs/scripting.html
+* Auto Deck Machine in TCG: https://bulbapedia.bulbagarden.net/wiki/Auto_Deck_Machine
