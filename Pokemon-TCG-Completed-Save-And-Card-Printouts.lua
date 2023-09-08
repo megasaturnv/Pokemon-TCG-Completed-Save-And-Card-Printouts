@@ -39,19 +39,19 @@ function screenshotColosseumPack()
 	sleepFrames(20)
 
 	for i=1,38 do --38 Pokemon Cards in the Colosseum pack. There are 50 Axx cards in total
-		screenshotSelectedCardInList("A" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
+		screenshotSelectedCardInList("A" .. zeroPadTwoDigits(i), 5) --Pokemon cards usually have 3 to 5 pages, except P19. We will assume 5 pages for this set
 		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 		sleepFrames(20)
 	end
 
 	for i=39,50 do --12 Trainer Cards in the Colosseum pack. There are 50 Axx cards in total
-		screenshotSelectedCardInList("A" .. zeroPadTwoDigits(i), 1) --Trainer cards have 1 face
+		screenshotSelectedCardInList("A" .. zeroPadTwoDigits(i), 1) --Trainer cards usually have 1 page, but B45, C48 and D48 have two pages
 		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 		sleepFrames(20)
 	end
 
 	for i=1,6 do --6 Energy Cards in the Colosseum pack. There are 7 Exx cards in total (6 in the Colosseum pack)
-		screenshotSelectedCardInList("E" .. zeroPadTwoDigits(i), 1) --Energy cards have 1 face
+		screenshotSelectedCardInList("E" .. zeroPadTwoDigits(i), 1) --Energy cards have 1 page
 		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 		sleepFrames(20)
 	end
@@ -65,13 +65,13 @@ function screenshotEvolutionPack()
 	sleepFrames(20)
 
 	for i=1,42 do --42 Pokemon Cards in the Evolution pack. There are 50 Bxx cards in total
-		screenshotSelectedCardInList("B" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
+		screenshotSelectedCardInList("B" .. zeroPadTwoDigits(i), 5)  --Pokemon cards usually have 3 to 5 pages, except P19. We will assume 5 pages for this set
 		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 		sleepFrames(20)
 	end
 
 	for i=43,50 do --8 Trainer Cards in the Evolution pack. There are 50 Bxx cards in total
-		screenshotSelectedCardInList("B" .. zeroPadTwoDigits(i), 1) --Trainer cards have 1 face
+		screenshotSelectedCardInList("B" .. zeroPadTwoDigits(i), 2) --Trainer cards usually have 1 page, but B45, C48 and D48 have two pages
 		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 		sleepFrames(20)
 	end
@@ -85,18 +85,18 @@ function screenshotMysteryPack()
 	sleepFrames(20)
 
 	for i=1,46 do --46 Pokemon Cards in the Mystery pack. There are 50 Cxx cards in total
-		screenshotSelectedCardInList("C" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
+		screenshotSelectedCardInList("C" .. zeroPadTwoDigits(i), 5)  --Pokemon cards usually have 3 to 5 pages, except P19. We will assume 5 pages for this set
 		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 		sleepFrames(20)
 	end
 
 	for i=47,50 do --4 Trainer Cards in the Mystery pack. There are 50 Cxx cards in total
-		screenshotSelectedCardInList("C" .. zeroPadTwoDigits(i), 1) --Trainer cards have 1 face
+		screenshotSelectedCardInList("C" .. zeroPadTwoDigits(i), 2) --Trainer cards usually have 1 page, but B45, C48 and D48 have two pages
 		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 		sleepFrames(20)
 	end
 
-	screenshotSelectedCardInList("E" .. zeroPadTwoDigits(7), 1) --1 Energy Card in the Mystery pack. There are 7 Exx cards in total (1 in the Mystery pack). Energy cards have 1 face
+	screenshotSelectedCardInList("E" .. zeroPadTwoDigits(7), 1) --1 Energy Card in the Mystery pack. There are 7 Exx cards in total (1 in the Mystery pack). Energy cards have 1 page
 	pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 	sleepFrames(20)
 
@@ -109,13 +109,13 @@ function screenshotLaboratoryPack()
 	sleepFrames(20)
 
 	for i=1,43 do --43 Pokemon Cards in the Laboratory pack. There are 51 Dxx cards in total
-		screenshotSelectedCardInList("D" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
+		screenshotSelectedCardInList("D" .. zeroPadTwoDigits(i), 5) --Pokemon cards usually have 3 to 5 pages, except P19. We will assume 5 pages for this set
 		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 		sleepFrames(20)
 	end
 
 	for i=44,51 do --8 Trainer Cards in the Laboratory pack. There are 51 Dxx cards in total
-		screenshotSelectedCardInList("D" .. zeroPadTwoDigits(i), 1) --Trainer cards have 1 face
+		screenshotSelectedCardInList("D" .. zeroPadTwoDigits(i), 2) --Trainer cards usually have 1 page, but B45, C48 and D48 have two pages
 		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 		sleepFrames(20)
 	end
@@ -128,20 +128,8 @@ function screenshotPromotionalCardPack()
 	pressAndRelease(C.GB_KEY.A) --Enter Promotional Card
 	sleepFrames(20)
 
-	for i=1,16 do --16 Pokemon Cards in the Promotional Card pack. There are 20 Pxx cards in total
-		screenshotSelectedCardInList("P" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
-		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
-		sleepFrames(20)
-	end
-
-	for i=17,18 do --2 Trainer Cards in the Promotional Card pack. There are 20 Pxx cards in total
-		screenshotSelectedCardInList("P" .. zeroPadTwoDigits(i), 1) --Trainer cards have 1 face
-		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
-		sleepFrames(20)
-	end
-
-	for i=19,20 do --2 Extra Pokemon Cards in the Promotional Card pack. There are 20 Pxx cards in total
-		screenshotSelectedCardInList("P" .. zeroPadTwoDigits(i), 4) --Pokemon cards have 3 to 4 faces. We will assume 4 faces for now
+	for i=1,20 do --18 Pokemon Cards and 2 Trainer cards in the Promotional Card pack. There are 20 Pxx cards in total
+		screenshotSelectedCardInList("P" .. zeroPadTwoDigits(i), 6) --Pokemon cards usually have 3 to 5 pages, except P19. Trainer cards usually have 1 page. To simplify things, we will assume 6 pages for everything in this set
 		pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 		sleepFrames(20)
 	end
