@@ -37,12 +37,12 @@ def deleteDuplicateFilesInDir(directory):
 
 	for filename in filenames:
 		# Calculate the MD5 hash of the file's content
-		with open(os.path.join(directory, filename), "rb") as file:
+		with open(os.path.join(directory, filename), 'rb') as file:
 			fileHash = hashlib.md5(file.read()).hexdigest()
 
 		# Check if the hash is already in the dictionary
 		if fileHash in fileHashes:
-			print(f"Duplicate files: Deleting: {filename} (Matched with {fileHashes[fileHash]})")
+			print(f'Duplicate files: Deleting: {filename} (Matched with {fileHashes[fileHash]})')
 			os.remove(os.path.join(directory, filename))
 		else:
 			# Store the hash and filename in the dictionary
@@ -218,7 +218,7 @@ def main():
 	###################
 	parser = argparse.ArgumentParser(description='description')
 
-	parser.add_argument('-v', '--verbose', help='Be Verbose and print debug output', action="store_true")
+	parser.add_argument('-v', '--verbose', help='Be Verbose and print debug output', action='store_true')
 
 	args = parser.parse_args()
 
@@ -236,7 +236,7 @@ def main():
 	#################################
 	# Variable setup & Calculations #
 	#################################
-	FirstLetterList = ["A", "B", "C", "D", "P"]
+	FirstLetterList = ['A', 'B', 'C', 'D', 'E', 'P']
 
 
 	################
@@ -246,32 +246,32 @@ def main():
 
 	print('Duplicate files: Deleting duplicate files in screenshot directory.')
 	deleteDuplicateFilesInDir(screenshotDirectory)
-	print("Duplicate files: Done!")
+	print('Duplicate files: Done!')
 
-	print("Processing images: Cropping and stitching them together...")
+	print('Processing images: Cropping and stitching them together...')
 	for firstLetter in FirstLetterList:
 		cardNumber = 1
-		while(os.path.isfile(os.path.join(screenshotDirectory, firstLetter + f"{cardNumber:02d}" + '_1.png'))):
-			#print('Creating: ' + outputDirectory + firstLetter + f"{cardNumber:02d}" + '.png')
-			matchingFiles = glob.glob(os.path.join(screenshotDirectory, firstLetter + f"{cardNumber:02d}" + '_*'))
+		while(os.path.isfile(os.path.join(screenshotDirectory, firstLetter + f'{cardNumber:02d}' + '_1.png'))):
+			#print('Creating: ' + outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png')
+			matchingFiles = glob.glob(os.path.join(screenshotDirectory, firstLetter + f'{cardNumber:02d}' + '_*'))
 			matchingFiles = sorted(matchingFiles)
 			match len(matchingFiles):
 				case 1: # The card has 1 page, so it is a trainer or energy card. Nothing to do except copy it to the output directory
-					copyfile(matchingFiles[0], outputDirectory + firstLetter + f"{cardNumber:02d}" + '.png')
+					copyfile(matchingFiles[0], outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png')
 				case 2: # Only B45, C48 and D48 have two pages
-					combineImages_2pages(outputDirectory + firstLetter + f"{cardNumber:02d}" + '.png', matchingFiles[0], matchingFiles[1])
+					combineImages_2pages(outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png', matchingFiles[0], matchingFiles[1])
 				case 3: # The card has 3 pages, so it is a Pokemon that knows 1 move
-					combineImages_3pages(outputDirectory + firstLetter + f"{cardNumber:02d}" + '.png', matchingFiles[0], matchingFiles[1], matchingFiles[2])
+					combineImages_3pages(outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png', matchingFiles[0], matchingFiles[1], matchingFiles[2])
 				case 4: # The card has 4 pages, so it is a Pokemon that knows 2 moves
-					combineImages_4pages(outputDirectory + firstLetter + f"{cardNumber:02d}" + '.png', matchingFiles[0], matchingFiles[1], matchingFiles[2], matchingFiles[3])
+					combineImages_4pages(outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png', matchingFiles[0], matchingFiles[1], matchingFiles[2], matchingFiles[3])
 				case 5: # The card has 5 pages, so it is a Pokemon that knows 2 moves + an extra page for detail
-					combineImages_5pages(outputDirectory + firstLetter + f"{cardNumber:02d}" + '.png', matchingFiles[0], matchingFiles[1], matchingFiles[2], matchingFiles[3], matchingFiles[4])
+					combineImages_5pages(outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png', matchingFiles[0], matchingFiles[1], matchingFiles[2], matchingFiles[3], matchingFiles[4])
 				case 6:	# P19 is the only card which has 6 pages
-					combineImages_6pages(outputDirectory + firstLetter + f"{cardNumber:02d}" + '.png', matchingFiles[0], matchingFiles[1], matchingFiles[2], matchingFiles[3], matchingFiles[4], matchingFiles[5])
+					combineImages_6pages(outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png', matchingFiles[0], matchingFiles[1], matchingFiles[2], matchingFiles[3], matchingFiles[4], matchingFiles[5])
 				case _:
 					print('Warning: ' + matchingFiles[0] + ' has ' + str(len(matchingFiles)) + ' pages')
 			cardNumber = cardNumber + 1
-	print("Processing images: Done!")
+	print('Processing images: Done!')
 
 
 #############################
