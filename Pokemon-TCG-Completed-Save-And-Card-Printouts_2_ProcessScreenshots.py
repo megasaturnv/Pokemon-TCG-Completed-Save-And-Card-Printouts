@@ -15,6 +15,10 @@ from shutil import copyfile
 #############
 # Functions #
 #############
+def printVerbose(string):
+	if args.verbose:
+		print("Debug: " + string)
+
 def createDirIfNotFound(filePath):
 	dirPath = os.path.dirname(filePath)
 	if not os.path.exists(dirPath):
@@ -38,165 +42,44 @@ def deleteDuplicateFilesInDir(directory):
 			# Store the hash and filename in the dictionary
 			fileHashes[fileHash] = filename
 
-def combineImages_2pages(output_path, page1Path, page2Path):
-	# Open the three pages
-	page1 = Image.open(page1Path)
-	page2 = Image.open(page2Path)
+def combineImages_pagesList(listPagePath):
+	if len(listPagePath) == 1: # One page
+		return Image.open(listPagePath[0])
+	elif 2 <= len(listPagePath) <= 6: # Two to six pages
+		# Open the pages
+		listPagesImage = []
+		for i in range(0, len(listPagePath)):
+			listPagesImage.append(Image.open(listPagePath[i]))
 
-	# Crop the rows from each page
-	croppedPage1   = page1.crop((0, 0,  160, 138)) # Rows 1  to 138 of the first  image (138 pixels high)
-	croppedPage2   = page2.crop((0, 80, 160, 144)) # Rows 81 to 144 of the second image (64 pixels high)
+		# Crop the rows from each page
+		listPagesImageCropped = []
+		listPagesImageCropped.append(  listPagesImage[0].crop((0, 0,  160, 138))  ) # Rows 1  to 138 of the first  image (138 pixels high)
+		for i in range(1, len(listPagePath)-1): # Use range(1, len(listPagePath)-1) to process page 2 to one from the last page. For two pages in total, we skip this loop entirely
+			listPagesImageCropped.append(  listPagesImage[i].crop((0, 16, 160, 32 ))  ) # Rows 17 to 32  of the image (16 pixels high)
+			listPagesImageCropped.append(  listPagesImage[i].crop((0, 80, 160, 138))  ) # Rows 81 to 138 of the image (58 pixels high)
+		listPagesImageCropped.append(  listPagesImage[-1].crop((0, 80, 160, 144))  ) # Rows 81 to 144 of the last image (64 pixels high)
 
-	# Create a new image with the desired size
-	finalWidth = 160
-	finalHeight = 138 + (144 - 80)
-	#print('finalHeight = ' + str(finalHeight)) # Should be 276
-	finalImage = Image.new('RGB', (finalWidth, finalHeight))
+		# Create a new image with the desired size
+		finalWidth = 160
+		finalHeight = 138 + (len(listPagePath)-2) * ((32 - 16) + (138 - 80)) + (144 - 80)
+		#printVerbose('finalHeight = ' + str(finalHeight))
+		finalImage = Image.new('RGB', (finalWidth, finalHeight))
 
-	# Paste the cropped pages onto the final image
-	finalImage.paste(croppedPage1,   (0, 0))
-	finalImage.paste(croppedPage2,   (0, 138))
+		# Paste the cropped pages onto the final image
+		finalImage.paste(listPagesImageCropped[0], (0, 0)) # First page
+		for i in range(0, len(listPagePath)-2): # Loop for pages n+1 to n-1
+			finalImage.paste(listPagesImageCropped[(i+1) * 2 - 1], (0, 138 + i * ((32 - 16) + (138 - 80)))) # Paste even-numbered pages (if zero-indexed. Odd-numbered pages if one-indexed)
+			finalImage.paste(listPagesImageCropped[(i+1) * 2], (0, 138 + i * ((32 - 16) + (138 - 80)) + (32 - 16))) # Paste odd-numbered pages (if zero-indexed. Even-numbered pages if one-indexed)
 
-	# Save the final image as a PNG
-	finalImage.save(output_path, 'PNG')
+		finalImage.paste(listPagesImageCropped[-1],   (0, 138 + (len(listPagePath)-2) * ((32 - 16) + (138 - 80)))) # Last page
 
-def combineImages_3pages(output_path, page1Path, page2Path, page3Path):
-	# Open the three pages
-	page1 = Image.open(page1Path)
-	page2 = Image.open(page2Path)
-	page3 = Image.open(page3Path)
+		# Save the final image as a PNG
+		#finalImage.save(outputPath, 'PNG')
 
-	# Crop the rows from each page
-	croppedPage1   = page1.crop((0, 0,  160, 138)) # Rows 1  to 138 of the first  image (138 pixels high)
-	croppedPage2_1 = page2.crop((0, 16, 160, 32))  # Rows 17 to 32  of the second image (16 pixels high)
-	croppedPage2_2 = page2.crop((0, 80, 160, 138)) # Rows 81 to 138 of the second image (58 pixels high)
-	croppedPage3   = page3.crop((0, 80, 160, 144)) # Rows 81 to 144 of the third  image (64 pixels high)
-
-	# Create a new image with the desired size
-	finalWidth = 160
-	finalHeight = 138 + (32 - 16) + (138 - 80) + (144 - 80)
-	#print('finalHeight = ' + str(finalHeight)) # Should be 276
-	finalImage = Image.new('RGB', (finalWidth, finalHeight))
-
-	# Paste the cropped pages onto the final image
-	finalImage.paste(croppedPage1,   (0, 0))
-	finalImage.paste(croppedPage2_1, (0, 138))
-	finalImage.paste(croppedPage2_2, (0, 138 + 16))
-	finalImage.paste(croppedPage3,   (0, 138 + 16 + 58))
-
-	# Save the final image as a PNG
-	finalImage.save(output_path, 'PNG')
-
-def combineImages_4pages(output_path, page1Path, page2Path, page3Path, page4Path):
-	# Open the four pages
-	page1 = Image.open(page1Path)
-	page2 = Image.open(page2Path)
-	page3 = Image.open(page3Path)
-	page4 = Image.open(page4Path)
-
-	# Crop the rows from each page
-	croppedPage1   = page1.crop((0, 0,  160, 138)) # Rows 1  to 138 of the first  image (138 pixels high)
-	croppedPage2_1 = page2.crop((0, 16, 160, 32))  # Rows 17 to 32  of the second image (16 pixels high)
-	croppedPage2_2 = page2.crop((0, 80, 160, 138)) # Rows 81 to 138 of the second image (58 pixels high)
-	croppedPage3_1 = page3.crop((0, 16, 160, 32))  # Rows 17 to 32  of the third  image (16 pixels high)
-	croppedPage3_2 = page3.crop((0, 80, 160, 138)) # Rows 81 to 138 of the third  image (58 pixels high)
-	croppedPage4   = page4.crop((0, 80, 160, 144)) # Rows 81 to 144 of the forth  image (64 pixels high)
-
-	# Create a new image with the desired size
-	finalWidth = 160
-	finalHeight = 138 + (32 - 16) + (138 - 80) + (32 - 16) + (138 - 80) + (144 - 80)
-	#print('finalHeight = ' + str(finalHeight)) # Should be 350
-	finalImage = Image.new('RGB', (finalWidth, finalHeight))
-
-	# Paste the cropped pages onto the final image
-	finalImage.paste(croppedPage1,   (0, 0))
-	finalImage.paste(croppedPage2_1, (0, 138))
-	finalImage.paste(croppedPage2_2, (0, 138 + 16))
-	finalImage.paste(croppedPage3_1, (0, 138 + 16 + 58))
-	finalImage.paste(croppedPage3_2, (0, 138 + 16 + 58 + 16))
-	finalImage.paste(croppedPage4,   (0, 138 + 16 + 58 + 16 + 58))
-
-	# Save the final image as a PNG
-	finalImage.save(output_path, 'PNG')
-
-def combineImages_5pages(output_path, page1Path, page2Path, page3Path, page4Path, page5Path):
-	# Open the five pages
-	page1 = Image.open(page1Path)
-	page2 = Image.open(page2Path)
-	page3 = Image.open(page3Path)
-	page4 = Image.open(page4Path)
-	page5 = Image.open(page5Path)
-
-	# Crop the rows from each page
-	croppedPage1   = page1.crop((0, 0,  160, 138)) # Rows 1  to 138 of the first  image (138 pixels high)
-	croppedPage2_1 = page2.crop((0, 16, 160, 32))  # Rows 17 to 32  of the second image (16 pixels high)
-	croppedPage2_2 = page2.crop((0, 80, 160, 138)) # Rows 81 to 138 of the second image (58 pixels high)
-	croppedPage3_1 = page3.crop((0, 16, 160, 32))  # Rows 17 to 32  of the third  image (16 pixels high)
-	croppedPage3_2 = page3.crop((0, 80, 160, 138)) # Rows 81 to 138 of the third  image (58 pixels high)
-	croppedPage4_1 = page4.crop((0, 16, 160, 32))  # Rows 17 to 32  of the forth  image (16 pixels high)
-	croppedPage4_2 = page4.crop((0, 80, 160, 138)) # Rows 81 to 138 of the forth  image (58 pixels high)
-	croppedPage5   = page5.crop((0, 80, 160, 144)) # Rows 81 to 144 of the fifth  image (64 pixels high)
-
-	# Create a new image with the desired size
-	finalWidth = 160
-	finalHeight = 138 + (32 - 16) + (138 - 80) + (32 - 16) + (138 - 80) + (32 - 16) + (138 - 80) + (144 - 80)
-	#print('finalHeight = ' + str(finalHeight)) # Should be 424
-	finalImage = Image.new('RGB', (finalWidth, finalHeight))
-
-	# Paste the cropped pages onto the final image
-	finalImage.paste(croppedPage1,   (0, 0))
-	finalImage.paste(croppedPage2_1, (0, 138))
-	finalImage.paste(croppedPage2_2, (0, 138 + 16))
-	finalImage.paste(croppedPage3_1, (0, 138 + 16 + 58))
-	finalImage.paste(croppedPage3_2, (0, 138 + 16 + 58 + 16))
-	finalImage.paste(croppedPage4_1, (0, 138 + 16 + 58 + 16 + 58))
-	finalImage.paste(croppedPage4_2, (0, 138 + 16 + 58 + 16 + 58 + 16))
-	finalImage.paste(croppedPage5,   (0, 138 + 16 + 58 + 16 + 58 + 16 + 58))
-
-	# Save the final image as a PNG
-	finalImage.save(output_path, 'PNG')
-
-def combineImages_6pages(output_path, page1Path, page2Path, page3Path, page4Path, page5Path, page6Path):
-	# Open the five pages
-	page1 = Image.open(page1Path)
-	page2 = Image.open(page2Path)
-	page3 = Image.open(page3Path)
-	page4 = Image.open(page4Path)
-	page5 = Image.open(page5Path)
-	page6 = Image.open(page6Path)
-
-	# Crop the rows from each page
-	croppedPage1   = page1.crop((0, 0,  160, 138)) # Rows 1  to 138 of the first  image (138 pixels high)
-	croppedPage2_1 = page2.crop((0, 16, 160, 32))  # Rows 17 to 32  of the second image (16 pixels high)
-	croppedPage2_2 = page2.crop((0, 80, 160, 138)) # Rows 81 to 138 of the second image (58 pixels high)
-	croppedPage3_1 = page3.crop((0, 16, 160, 32))  # Rows 17 to 32  of the third  image (16 pixels high)
-	croppedPage3_2 = page3.crop((0, 80, 160, 138)) # Rows 81 to 138 of the third  image (58 pixels high)
-	croppedPage4_1 = page4.crop((0, 16, 160, 32))  # Rows 17 to 32  of the forth  image (16 pixels high)
-	croppedPage4_2 = page4.crop((0, 80, 160, 138)) # Rows 81 to 138 of the forth  image (58 pixels high)
-	croppedPage5_1 = page5.crop((0, 16, 160, 32))  # Rows 17 to 32  of the fifth  image (16 pixels high)
-	croppedPage5_2 = page5.crop((0, 80, 160, 138)) # Rows 81 to 138 of the fifth  image (58 pixels high)
-	croppedPage6   = page6.crop((0, 80, 160, 144)) # Rows 81 to 144 of the sixth  image (64 pixels high)
-
-	# Create a new image with the desired size
-	finalWidth = 160
-	finalHeight = 138 + (32 - 16) + (138 - 80) + (32 - 16) + (138 - 80) + (32 - 16) + (138 - 80) + (32 - 16) + (138 - 80) + (144 - 80)
-	#print('finalHeight = ' + str(finalHeight)) # Should be 424
-	finalImage = Image.new('RGB', (finalWidth, finalHeight))
-
-	# Paste the cropped pages onto the final image
-	finalImage.paste(croppedPage1,   (0, 0))
-	finalImage.paste(croppedPage2_1, (0, 138))
-	finalImage.paste(croppedPage2_2, (0, 138 + 16))
-	finalImage.paste(croppedPage3_1, (0, 138 + 16 + 58))
-	finalImage.paste(croppedPage3_2, (0, 138 + 16 + 58 + 16))
-	finalImage.paste(croppedPage4_1, (0, 138 + 16 + 58 + 16 + 58))
-	finalImage.paste(croppedPage4_2, (0, 138 + 16 + 58 + 16 + 58 + 16))
-	finalImage.paste(croppedPage5_1, (0, 138 + 16 + 58 + 16 + 58 + 16 + 58))
-	finalImage.paste(croppedPage5_2, (0, 138 + 16 + 58 + 16 + 58 + 16 + 58 + 16))
-	finalImage.paste(croppedPage6,   (0, 138 + 16 + 58 + 16 + 58 + 16 + 58 + 16 + 58))
-
-	# Save the final image as a PNG
-	finalImage.save(output_path, 'PNG')
+		return finalImage
+	else: # More than 6 pages, which shouldn't happen
+		print("Warning: Invalid number of pages sent to combineImages_pagesList()")
+		return Image.new('RGB', (1, 1)) # Return a blank 1x1 pixel image
 
 
 #################
@@ -210,10 +93,8 @@ def main():
 
 	parser.add_argument('-v', '--verbose', help='Be Verbose and print debug output', action='store_true')
 
+	global args
 	args = parser.parse_args()
-
-	if args.verbose:
-		print('Argument verbose: ' + str(args.verbose))
 
 
 	############
@@ -235,32 +116,24 @@ def main():
 	createDirIfNotFound(outputDirectory)
 
 	print('Duplicate files: Deleting duplicate files in screenshot directory.')
-	deleteDuplicateFilesInDir(screenshotDirectory)
+	deleteDuplicateFilesInDir(screenshotDirectory) # We have to do this as the lua script from before will have created duplicates
 	print('Duplicate files: Done!')
 
 	print('Processing images: Cropping and stitching them together...')
-	for firstLetter in FirstLetterList:
+	for firstLetter in FirstLetterList: # Go through each starting letter
 		cardNumber = 1
-		while(os.path.isfile(os.path.join(screenshotDirectory, firstLetter + f'{cardNumber:02d}' + '_1.png'))):
-			#print('Creating: ' + outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png')
-			matchingFiles = glob.glob(os.path.join(screenshotDirectory, firstLetter + f'{cardNumber:02d}' + '_*'))
-			matchingFiles = sorted(matchingFiles)
-			match len(matchingFiles):
-				case 1: # The card has 1 page, so it is a trainer or energy card. Nothing to do except copy it to the output directory
-					copyfile(matchingFiles[0], outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png')
-				case 2: # Only B45, C48 and D48 have two pages
-					combineImages_2pages(outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png', matchingFiles[0], matchingFiles[1])
-				case 3: # The card has 3 pages, so it is a Pokemon that knows 1 move
-					combineImages_3pages(outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png', matchingFiles[0], matchingFiles[1], matchingFiles[2])
-				case 4: # The card has 4 pages, so it is a Pokemon that knows 2 moves
-					combineImages_4pages(outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png', matchingFiles[0], matchingFiles[1], matchingFiles[2], matchingFiles[3])
-				case 5: # The card has 5 pages, so it is a Pokemon that knows 2 moves + an extra page for detail
-					combineImages_5pages(outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png', matchingFiles[0], matchingFiles[1], matchingFiles[2], matchingFiles[3], matchingFiles[4])
-				case 6:	# P19 is the only card which has 6 pages
-					combineImages_6pages(outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png', matchingFiles[0], matchingFiles[1], matchingFiles[2], matchingFiles[3], matchingFiles[4], matchingFiles[5])
-				case _:
-					print('Warning: ' + matchingFiles[0] + ' has ' + str(len(matchingFiles)) + ' pages')
-			cardNumber = cardNumber + 1
+		while(os.path.isfile(os.path.join(screenshotDirectory, firstLetter + f'{cardNumber:02d}' + '_1.png'))): # Loop through until we exceed the number of card numbers in this letter's set
+			#printVerbose('Creating: ' + outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png')
+
+			matchingFiles = glob.glob(os.path.join(screenshotDirectory, firstLetter + f'{cardNumber:02d}' + '_*')) # Get list of files to process
+			matchingFiles = sorted(matchingFiles) # Make sure the files are in alphabetical order
+
+			combineImages_pagesList(matchingFiles).save(outputDirectory + firstLetter + f'{cardNumber:02d}' + '.png', 'PNG') # Crop and combine the images, then save them to a new file in outputDirectory
+
+			cardNumber = cardNumber + 1 # Increment to the next card
+
+		printVerbose('Processed ' + str(cardNumber-1) + ' cards beginning with ' + firstLetter)
+
 	print('Processing images: Done!')
 
 
