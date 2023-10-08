@@ -18,9 +18,7 @@ function zeroPadTwoDigits(number) --Return a number as a zero-padded 2-digit str
 end
 
 function screenshotSelectedCardInList(cardReference, pages)
-	pressAndRelease(C.GB_KEY.A) --Press A to see summary of pokemon
 	sleepFrames(20)
-
 	for i=1,pages do --Todo: Replace with pressing the A button instead, then checking each screenshot until the page changes back to the list
 		emu:screenshot(screenshotDirectory .. "/" .. cardReference .. "_" .. tostring(i) .. ".png")
 		sleepFrames(10)
@@ -29,13 +27,12 @@ function screenshotSelectedCardInList(cardReference, pages)
 			sleepFrames(20)
 		end
 	end
-
-	pressAndRelease(C.GB_KEY.B) --Finally, press B to return to the list
-	sleepFrames(20)
 end
 
 function screenshotColosseumPack()
 	pressAndRelease(C.GB_KEY.A) --Enter Colosseum
+	sleepFrames(20)
+	pressAndRelease(C.GB_KEY.A) --Enter first card
 	sleepFrames(20)
 
 	for i=1,38 do --38 Pokemon Cards in the Colosseum pack. There are 50 Axx cards in total
@@ -56,12 +53,16 @@ function screenshotColosseumPack()
 		sleepFrames(20)
 	end
 
+	pressAndRelease(C.GB_KEY.B) --Return to Card list
+	sleepFrames(20)
 	pressAndRelease(C.GB_KEY.B) --Return to Booster Pack list
 	sleepFrames(20)
 end
 
 function screenshotEvolutionPack()
 	pressAndRelease(C.GB_KEY.A) --Enter Evolution
+	sleepFrames(20)
+	pressAndRelease(C.GB_KEY.A) --Enter first card
 	sleepFrames(20)
 
 	for i=1,42 do --42 Pokemon Cards in the Evolution pack. There are 50 Bxx cards in total
@@ -76,12 +77,16 @@ function screenshotEvolutionPack()
 		sleepFrames(20)
 	end
 
+	pressAndRelease(C.GB_KEY.B) --Return to Card list
+	sleepFrames(20)
 	pressAndRelease(C.GB_KEY.B) --Return to Booster Pack list
 	sleepFrames(20)
 end
 
 function screenshotMysteryPack()
 	pressAndRelease(C.GB_KEY.A) --Enter Mystery
+	sleepFrames(20)
+	pressAndRelease(C.GB_KEY.A) --Enter first card
 	sleepFrames(20)
 
 	for i=1,46 do --46 Pokemon Cards in the Mystery pack. There are 50 Cxx cards in total
@@ -100,12 +105,16 @@ function screenshotMysteryPack()
 	pressAndRelease(C.GB_KEY.DOWN) --Go down to the next card
 	sleepFrames(20)
 
+	pressAndRelease(C.GB_KEY.B) --Return to Card list
+	sleepFrames(20)
 	pressAndRelease(C.GB_KEY.B) --Return to Booster Pack list
 	sleepFrames(20)
 end
 
 function screenshotLaboratoryPack()
 	pressAndRelease(C.GB_KEY.A) --Enter Laboratory
+	sleepFrames(20)
+	pressAndRelease(C.GB_KEY.A) --Enter first card
 	sleepFrames(20)
 
 	for i=1,43 do --43 Pokemon Cards in the Laboratory pack. There are 51 Dxx cards in total
@@ -120,12 +129,16 @@ function screenshotLaboratoryPack()
 		sleepFrames(20)
 	end
 
+	pressAndRelease(C.GB_KEY.B) --Return to Card list
+	sleepFrames(20)
 	pressAndRelease(C.GB_KEY.B) --Return to Booster Pack list
 	sleepFrames(20)
 end
 
 function screenshotPromotionalCardPack()
 	pressAndRelease(C.GB_KEY.A) --Enter Promotional Card
+	sleepFrames(20)
+	pressAndRelease(C.GB_KEY.A) --Enter first card
 	sleepFrames(20)
 
 	for i=1,20 do --18 Pokemon Cards and 2 Trainer cards in the Promotional Card pack. There are 20 Pxx cards in total
@@ -134,6 +147,8 @@ function screenshotPromotionalCardPack()
 		sleepFrames(20)
 	end
 
+	pressAndRelease(C.GB_KEY.B) --Return to Card list
+	sleepFrames(20)
 	pressAndRelease(C.GB_KEY.B) --Return to Booster Pack list
 	sleepFrames(20)
 end

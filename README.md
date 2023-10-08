@@ -35,8 +35,6 @@ PIL for the python3 script
 
 ## Todo
 * Complete more of the save file
-* Change the Lua script to use up + down keys to select the next card instead of going back to the menu
-* Optimise the delays in the Lua script
 * Recreate the Auto Deck Machine's decks in code to produce these decks from the output images
 * Automate the process of printing all cards on the Game Boy Printer (black and white images, first page)
 
